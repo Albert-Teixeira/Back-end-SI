@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Admin
+  Client
+  Seller
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  cpf       Int      @unique
+  name      String
+  email     String   @unique
+  password  String
+  birthDate String
+  role      Role
+  createdAt DateTime
+  updatedAt DateTime
+  orders Order[]
+  addressId Int @unique
+  address Address @relation(fields: [addressId], references: [id])
+  storeId Int? @unique
+  store Store? @relation(fields: [storeId], references: [id])
+}
+
+enum Uf {
+  AC
+  AL
+  AM
+  AP
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MG
+  MS
+  MT
+  PA
+  PB
+  PE
+  PI
+  PR
+  RJ
+  RN
+  RO
+  RR
+  RS
+  SC
+  SE
+  SP
+  TO
+}
+
+model City {
+  id   Int    @id @default(autoincrement())
+  name String
+  uf   Uf
+  address Address[]
+}
+
+model Address {
+  id          Int    @id @default(autoincrement())
+  cep         String
+  street      String
+  houseNumber String
+  complement  String
+  cityId Int
+  city City? @relation(fields: [cityId], references: [id])
+  user User?
+
+}
+
+model Store {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  user User?
+  products Product[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  weight      Int
+  size        Int
+  material    String
+  price       Int
+  createdAt   DateTime
+  updatedAt   DateTime
+  reviews Review[]
+  storeId Int
+  store Store @relation(fields: [storeId], references: [id])
+
+}
+
+enum Status {
+  Pending
+  Processing
+  Shipped
+  Delivered
+  Cancelled
+}
+
+model Order {
+  id     Int    @id @default(autoincrement())
+  status Status
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
+}
+
+model Review {
+  id          Int    @id @default(autoincrement())
+  description String
+  rating      Int
+  productId Int
+  product Product @relation(fields: [productId], references: [id])  
+}
