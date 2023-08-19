@@ -10,115 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  Admin
-  Client
-  Seller
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  cpf       Int      @unique
-  name      String
-  email     String   @unique
-  password  String
-  birthDate String
-  role      Role
-  createdAt DateTime
-  updatedAt DateTime
-  orders Order[]
-  addressId Int @unique
-  address Address @relation(fields: [addressId], references: [id])
-  storeId Int? @unique
-  store Store? @relation(fields: [storeId], references: [id])
-}
-
-enum Uf {
-  AC
-  AL
-  AM
-  AP
-  BA
-  CE
-  DF
-  ES
-  GO
-  MA
-  MG
-  MS
-  MT
-  PA
-  PB
-  PE
-  PI
-  PR
-  RJ
-  RN
-  RO
-  RR
-  RS
-  SC
-  SE
-  SP
-  TO
-}
-
-model City {
-  id   Int    @id @default(autoincrement())
-  name String
-  uf   Uf
-  address Address[]
-}
-
-model Address {
-  id          Int    @id @default(autoincrement())
-  cep         String
-  street      String
-  houseNumber String
-  complement  String
-  cityId Int
-  city City? @relation(fields: [cityId], references: [id])
-  user User?
-
-}
-
-model Store {
-  id          Int    @id @default(autoincrement())
-  name        String
-  description String
-  user User?
-  products Product[]
-}
-
 model Product {
   id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  weight      Int
-  size        Int
-  material    String
-  price       Int
-  createdAt   DateTime
-  updatedAt   DateTime
+  url         String[]
+  nome        String
+  telefone    String
+  idade       Int
+  peso        Int
+  MoraSo      String
+  valor       Int
+  oral        String
+  cartao      String
+  cidade      String
+  altura      Int
+  whatsapp    String
+  atende      String
+  anal        String
+  descricao   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   reviews Review[]
-  storeId Int
-  store Store @relation(fields: [storeId], references: [id])
-
-}
-
-enum Status {
-  Pending
-  Processing
-  Shipped
-  Delivered
-  Cancelled
-}
-
-model Order {
-  id     Int    @id @default(autoincrement())
-  status Status
-  userId Int
-  user User @relation(fields: [userId], references: [id])
 
 }
 
