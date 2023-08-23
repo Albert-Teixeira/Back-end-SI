@@ -10,10 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProductType {
+  HOMENS
+  MULHERES
+  TRAVESTIS
+  VIPS
+}
+
 model Product {
   id          Int      @id @default(autoincrement())
-  url         String[]
-  nome        String
+  url         String[] 
+  nome        String 
   telefone    String
   idade       Int
   peso        Int
@@ -23,9 +30,12 @@ model Product {
   cartao      String
   cidade      String
   altura      Int
+  beija       String
+  horario     String
   whatsapp    String
   atende      String
   anal        String
+  type        ProductType 
   descricao   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -37,6 +47,6 @@ model Review {
   id          Int    @id @default(autoincrement())
   description String
   rating      Int
-  productId Int
+  productId  Int
   product Product @relation(fields: [productId], references: [id])  
 }
