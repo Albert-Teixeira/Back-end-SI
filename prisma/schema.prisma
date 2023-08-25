@@ -11,10 +11,10 @@ datasource db {
 }
 
 enum ProductType {
-  HOMENS
-  MULHERES
-  TRAVESTIS
-  VIPS
+  FEMININO
+  MASCULINO
+  INFANTIL
+  NOVIDADES
 }
 
 model Product {
@@ -22,19 +22,14 @@ model Product {
   url         String[] 
   nome        String 
   telefone    String
-  idade       Int
-  peso        Int
-  MoraSo      String
+  material    String @default("pano")
+  marca       String @default("nike")
+  estoque     Int @default(10)
   valor       Int
-  oral        String
   cartao      String
   cidade      String
-  altura      Int
-  beija       String
-  horario     String
-  whatsapp    String
-  atende      String
-  anal        String
+  tamanho     Int @default(10)
+  vendedor    String @default("rychard")
   type        ProductType 
   descricao   String
   createdAt   DateTime @default(now())

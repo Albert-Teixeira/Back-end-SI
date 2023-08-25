@@ -9,7 +9,7 @@ export class ProductController {
 
   @Get()
   findAll(@Query("type")type?:ProductType) {
-    if(type != "HOMENS" && type != "MULHERES" && type != "TRAVESTIS" && type != "VIPS" && type != undefined){
+    if(type != "MASCULINO" && type != "FEMININO" && type != "INFANTIL" && type != "NOVIDADES" && type != undefined){
       throw new BadRequestException("Tipo invalido")
     }
     return this.productService.findAll(type);
