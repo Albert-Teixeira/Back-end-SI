@@ -14,7 +14,8 @@ export class ProductService {
     });
   }
   findOne(id: number) {
-    return this.prismaService.product.findUnique({where:{id}});
+    return this.prismaService.product.findUnique({where:{id},include:{reviews:true}});
+
   }
 
 }
