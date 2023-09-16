@@ -6,6 +6,9 @@ export class ReviewEntity implements Review {
     id: number;
 
     @IsString()
+    userEmail: string
+
+    @IsString()
     text: string;
 
     @IsString()

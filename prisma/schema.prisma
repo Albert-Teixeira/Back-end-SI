@@ -42,7 +42,8 @@ model Review {
   id          Int     @id @default(autoincrement())
   text        String
   user        String
-  profilePictureUrl         String
+  userEmail   String
+  profilePictureUrl String
   productId   Int
   product     Product @relation(fields: [productId], references: [id])
   createdAt   DateTime @default(now())

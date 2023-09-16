@@ -1,4 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import jwtDecode from 'jwt-decode';
 import { OAuth2Client } from "google-auth-library"
 
 @Injectable()
@@ -7,24 +8,40 @@ export class OAuthGuard implements CanActivate {
     context: ExecutionContext,
   ){
     const request = context.switchToHttp().getRequest();
-    const credentials = this.extractCredentialsFromHeader(request);
-    if (!credentials) {
+    const credentials = request.headers.authorization;
+
+    if (!credentials)
       throw new UnauthorizedException("Credenciais não enviadas");
+
+    const [prefixo, token] = credentials.split(" ");
+
+    if (!token) 
+      throw new UnauthorizedException("Credenciais não enviadas");
+
+    if (prefixo !== "Bearer")
+      throw new UnauthorizedException("Prefixo inválido");
+
+
+    let decoded: {aud:string};
+
+    try {
+      decoded = jwtDecode(token);
     }
-    const {clientId, credential} = credentials;
+    catch (error) {
+      throw new UnauthorizedException(error.message)
+    }
+
     const client = new OAuth2Client();
+    
     try{
         await client.verifyIdToken({
-            idToken: credential,
-            audience: clientId  
+            idToken: token,
+            audience: decoded.aud,
         })
+        request.user = decoded;
         return true;
     }catch(error){
         throw new UnauthorizedException(error.message)
     }
-  }
-  private extractCredentialsFromHeader(request: any): {clientId:string, credential:string} {
-    const credentials = JSON.parse(request.header.authorization)
-    return credentials;
   }
 }

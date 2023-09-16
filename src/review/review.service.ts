@@ -7,13 +7,14 @@ import { Prisma } from "@prisma/client";
 export class ReviewService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createReviewDto: CreateReviewDto) {
+  create(createReviewDto: CreateReviewDto, user:any) {
     console.log(createReviewDto);
     return this.prismaService.review.create({
       data: {
-        profilePictureUrl: createReviewDto.profilePictureUrl,
+        userEmail: user.email,
+        profilePictureUrl: user.picture,
         text: createReviewDto.text,
-        user: createReviewDto.user,
+        user: user.name,
         product: { connect: { id: createReviewDto.productId } },
       },
     });
