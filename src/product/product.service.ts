@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ProductType } from '@prisma/client';
+import { CityType, ProductType } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -8,9 +8,9 @@ export class ProductService {
     
   }
 
-  findAll(type? : ProductType) {
+  findAll(type? : ProductType, city?: CityType) {
     return this.prismaService.product.findMany({
-      where: {type}
+      where: {type, cidade: city },
     });
   }
   findOne(id: number) {

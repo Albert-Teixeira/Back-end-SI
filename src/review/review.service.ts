@@ -7,6 +7,12 @@ import { Prisma } from "@prisma/client";
 export class ReviewService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  findOne(id: number) {
+    return this.prismaService.review.findUnique({
+      where: { id },
+    });
+  }
+
   create(createReviewDto: CreateReviewDto, user:any) {
     console.log(createReviewDto);
     return this.prismaService.review.create({

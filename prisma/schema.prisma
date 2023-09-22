@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DEPLOY")
 }
 
 enum ProductType {
@@ -16,6 +16,32 @@ enum ProductType {
   INFANTIL
   NOVIDADES
 }
+
+enum CityType {
+  AsaNorte
+  AsaSul
+  AguasClaras
+  LagoSul
+  LagoNorte
+  Sudoeste
+  NucleoBandeirantes
+  Guara
+  Taguatinga
+  VicentePires
+  Ceilandia
+  Samambaia
+  RiachoFundo
+  RecantoDasEmas
+  SantaMaria
+  Gama
+  SaoSebastiao
+  Paranoa
+  Planaltina
+  Sobradinho
+  Brazlandia
+  Candangolandia
+}
+
 
 model Product {
   id          Int      @id @default(autoincrement())
@@ -27,7 +53,7 @@ model Product {
   estoque     Int @default(10)
   valor       Int
   cartao      String
-  cidade      String
+  cidade      CityType
   tamanho     Int @default(10)
   vendedor    String @default("rychard")
   type        ProductType 
