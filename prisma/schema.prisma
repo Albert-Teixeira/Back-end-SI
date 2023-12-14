@@ -63,6 +63,7 @@ model Product {
   anal        String
   type        ProductType 
   descricao   String
+  acessos     Int @default(0)
   pago        Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

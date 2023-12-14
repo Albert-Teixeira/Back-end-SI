@@ -21,5 +21,23 @@ export class ProductController {
   findOne(@Param('id') id: string) {
     return this.productService.findOne(+id);
   }
+  
+  //contador
+  @Get(':id')
+  async getProduct(@Param('id') id: number) {
+    try {
+      // Incrementa o contador de acessos do produto com o ID fornecido
+      await this.productService.incrementProductViews(id);
+
+      // Recupera e retorna os detalhes do produto
+      const productDetails = await this.productService.findOne(id);
+
+      return { product: productDetails };
+    } catch (error) {
+      // Lidar com erros, como produto não encontrado
+      console.error(error);
+      throw error; // Propagar o erro para o manipulador de erros global
+    }
+  }
 
 }
